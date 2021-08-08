@@ -272,3 +272,11 @@ $service->updateModel($setting);
 $setting = $service->getById(1);
 $service->deleteModel($setting);
 ```
+
+#### Test
+
+For test need phpunit
+
+```
+vendor/bin/phpunit vendor/it-devgroup/laravel-setting-lite
+```

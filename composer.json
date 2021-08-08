@@ -36,7 +36,8 @@
             "src/helpers.php"
         ],
         "psr-4": {
-            "ItDevgroup\\LaravelSettingLite\\": "src/"
+            "ItDevgroup\\LaravelSettingLite\\": "src/",
+            "ItDevgroup\\LaravelSettingLite\\Test\\": "tests/"
         }
     }
 }
