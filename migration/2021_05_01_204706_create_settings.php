@@ -20,10 +20,10 @@ class CreateSettings extends Migration
             $table->bigIncrements('id');
             $table->string('key')->unique()->index();
             $table->text('description')->nullable();
-            $table->string('value')->nullable();
+            $table->text('value')->nullable();
             $table->json('options')->nullable();
             $table->string('type');
-            $table->string('group')->index();
+            $table->string('group')->index()->nullable();
             $table->boolean('is_public')->default(false);
             $table->timestamps();
         });

@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Lang;
  * @property string|null $value
  * @property array|null $options
  * @property string $type
- * @property string $group
+ * @property string|null $group
  * @property bool $is_public
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -92,14 +92,14 @@ class Setting extends Model
      * @param string $key
      * @param string|null $value
      * @param string $type
-     * @param string $group
+     * @param string|null $group
      * @return self
      */
     public static function register(
         string $key,
         ?string $value,
         string $type,
-        string $group
+        ?string $group = null
     ): self {
         $model = new self();
         $model->key = $key;
