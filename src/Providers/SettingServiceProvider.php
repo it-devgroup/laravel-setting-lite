@@ -15,10 +15,17 @@ use ItDevgroup\LaravelSettingLite\SettingServiceInterface;
 class SettingServiceProvider extends ServiceProvider
 {
     /**
+     * @var string
+     */
+    private $appVersion;
+
+    /**
      * @return void
      */
     public function boot()
     {
+        $this->appVersion = explode('.', $this->app->version())[0];
+
         $this->loadCustomCommands();
         $this->loadCustomConfig();
         $this->loadCustomPublished();
@@ -60,13 +67,19 @@ class SettingServiceProvider extends ServiceProvider
                 ],
                 'config'
             );
-        }
-        if ($this->app->runningInConsole()) {
             $this->publishes(
                 [
                     __DIR__ . '/../../migration' => database_path('migrations')
                 ],
                 'migration'
+            );
+            $this->publishes(
+                [
+                    __DIR__ . '/../../resources/lang' => $this->appVersion >= 9
+                        && get_class($this->app) != 'Laravel\Lumen\Application'
+                            ? base_path('lang') : resource_path('lang')
+                ],
+                'lang'
             );
         }
     }

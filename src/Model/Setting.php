@@ -35,25 +35,46 @@ class Setting extends Model
     public const TYPE_FLOAT = 'float';
     public const TYPE_LIST = 'list';
     public const TYPE_MULTILIST = 'multilist';
+    public const TYPE_PASSWORD = 'password';
+    public const TYPE_CHECKBOX = 'checkbox';
+    public const TYPE_RADIO = 'radio';
 
     /**
-     * @var string
+     * @inheritDoc
      */
-    protected $table = 'settings';
+    protected $fillable = [
+        'key',
+        'description',
+        'value',
+        'options',
+        'type',
+        'group',
+        'is_public',
+    ];
     /**
-     * @var array
+     * @inheritDoc
      */
     protected $dates = [
         'created_at',
         'updated_at',
     ];
     /**
-     * @var array
+     * @inheritDoc
      */
     protected $casts = [
         'options' => 'array',
         'is_public' => 'boolean',
     ];
+
+    /**
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        $this->table = Config::get('setting_lite.table');
+
+        parent::__construct($attributes);
+    }
 
     /**
      * @return string|null
@@ -93,15 +114,15 @@ class Setting extends Model
      * @param string|null $value
      * @param string $type
      * @param string|null $group
-     * @return self
+     * @return static
      */
     public static function register(
         string $key,
         ?string $value,
         string $type,
         ?string $group = null
-    ): self {
-        $model = new self();
+    ) {
+        $model = new static();
         $model->key = $key;
         $model->value = $value;
         $model->type = $type;
