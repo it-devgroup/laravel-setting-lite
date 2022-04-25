@@ -30,6 +30,7 @@ class SettingPublishCommand extends Command
     private array $fileTags = [
         'config',
         'migration',
+        'lang',
     ];
 
     /**
@@ -47,6 +48,9 @@ class SettingPublishCommand extends Command
                 break;
             case 'migration':
                 $this->copyMigration();
+                break;
+            case 'lang':
+                $this->copyLang();
                 break;
             default:
                 $this->error('Not selected tag');
@@ -83,6 +87,17 @@ class SettingPublishCommand extends Command
     private function copyMigration(): void
     {
         $this->copyFiles($this->files['migration']['from'], $this->files['migration']['to']);
+    }
+
+    /**
+     * @return void
+     */
+    private function copyLang(): void
+    {
+        $this->copyFiles(
+            $this->files['lang']['from'] . '/lang/en/',
+            $this->files['lang']['to'] . '/lang/en/'
+        );
     }
 
     /**

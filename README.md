@@ -30,6 +30,12 @@ For creating config file
 php artisan setting:publish --tag=config
 ```
 
+For creating lang file
+
+```
+php artisan setting:publish --tag=lang
+```
+
 For creating migration file
 
 ```
@@ -68,6 +74,12 @@ For creating config file
 
 ```
 php artisan vendor:publish --provider="ItDevgroup\LaravelSettingLite\Providers\SettingServiceProvider" --tag=config
+```
+
+For creating language file (if need for setting description)
+
+```
+php artisan vendor:publish --provider="ItDevgroup\LaravelSettingLite\Providers\SettingServiceProvider" --tag=lang
 ```
 
 For creating migration file
@@ -125,7 +137,7 @@ class CustomFile extends \ItDevgroup\LaravelSettingLite\Model\Setting
 }
 ```
 
-If need change table name or need added other code:
+If need added other code:
 
 ```
 <?php
@@ -133,9 +145,7 @@ If need change table name or need added other code:
 namespace App;
 
 class CustomFile extends \ItDevgroup\LaravelSettingLite\Model\Setting
-{
-    protected $table = 'YOUR_TABLE_NAME';
-    
+{    
     // other code
 }
 ```
