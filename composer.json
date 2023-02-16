@@ -2,7 +2,7 @@
     "name": "it-devgroup/laravel-setting-lite",
     "description": "laravel setting lite",
     "type": "library",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "license": "MIT",
     "authors": [
         {
@@ -18,16 +18,14 @@
     ],
     "keywords": [
         "laravel",
-        "lumen",
-        "setting",
-        "it-devgroup"
+        "setting"
     ],
     "require": {
-        "php": "^7.4|^8.0",
-        "illuminate/support": "^7.0|^8.0|^9.0",
-        "illuminate/database": "^7.0|^8.0|^9.0",
-        "nesbot/carbon": "^1.0|^2.0",
-        "illuminate/collections": "^7.0|^8.0|^9.0",
+        "php": "^8.0",
+        "illuminate/support": "^9.0|^10.0",
+        "illuminate/database": "^9.0|^10.0",
+        "nesbot/carbon": "^2.0",
+        "illuminate/collections": "^9.0|^10.0",
         "ext-json": "*"
     },
     "minimum-stability": "dev",
@@ -38,6 +36,13 @@
         "psr-4": {
             "ItDevgroup\\LaravelSettingLite\\": "src/",
             "ItDevgroup\\LaravelSettingLite\\Test\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ItDevgroup\\LaravelSettingLite\\Providers\\SettingServiceProvider"
+            ]
         }
     }
 }

@@ -2,39 +2,49 @@
 
 namespace ItDevgroup\LaravelSettingLite\Test;
 
-use ItDevgroup\LaravelSettingLite\SettingService;
-use ItDevgroup\LaravelSettingLite\Test\Resource\SettingModelTest;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Lang;
 use PHPUnit\Framework\TestCase as BaseTestCase;
-use ReflectionClass;
 
 /**
  * Class TestCase
  */
 class TestCase extends BaseTestCase
 {
-    /**
-     * @var ReflectionClass|null
-     */
-    protected ?ReflectionClass $reflectionClass = null;
-    /**
-     * @var SettingService|object|null
-     */
-    protected ?SettingService $service = null;
-
-    /**
-     * @return void
-     */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->reflectionClass = new ReflectionClass(SettingService::class);
-        $this->service = $this->reflectionClass->newInstanceWithoutConstructor();
-        $reflectionProperty = $this->reflectionClass->getProperty('modelName');
-        $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue(
-            $this->service,
-            SettingModelTest::class
-        );
+        Config::partialMock()
+            ->shouldReceive('get')
+            ->andReturnUsing(function ($path) {
+                switch ($path) {
+                    case 'setting_lite.description_field_from_lexicon':
+                        return true;
+                    case 'setting_lite.lexicon':
+                        return 'setting_lite';
+                }
+
+                return null;
+            });
+
+        Lang::partialMock()
+            ->shouldReceive('has')
+            ->andReturnTrue();
+
+        Lang::partialMock()
+            ->shouldReceive('get')
+            ->andReturnUsing(function ($path) {
+                switch ($path) {
+                    case 'setting_lite.setting.key_1':
+                        return 'description from lexicon';
+                    case 'setting_lite.setting.upd_key_1':
+                        return 'upd description from lexicon';
+                }
+
+                return null;
+            });
+
+        parent::setUp();
     }
 }

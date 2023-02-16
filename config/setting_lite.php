@@ -11,16 +11,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Model
-    |--------------------------------------------------------------------------
-    | Setting model (default): \ItDevgroup\LaravelSettingLite\Model\Setting::class
-    | Change to your custom class if you need to extend the model or change the table name
-    | A custom class for setting must inherit the base class \ItDevgroup\LaravelSettingLite\Model\Setting
-    */
-    'model' => \ItDevgroup\LaravelSettingLite\Model\Setting::class,
-
-    /*
-    |--------------------------------------------------------------------------
     | Data from seeder file
     |--------------------------------------------------------------------------
     | Required
@@ -80,7 +70,7 @@ return [
     |--------------------------------------------------------------------------
     | If field of description is empty - set value field description from lexicon
     */
-    'description_field_from_lexicon' => false,
+    'description_field_from_lexicon' => true,
 
     /*
     |--------------------------------------------------------------------------

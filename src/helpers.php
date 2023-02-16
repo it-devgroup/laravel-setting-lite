@@ -1,16 +1,14 @@
 <?php
 
+use ItDevgroup\LaravelSettingLite\Model\SettingModel;
+
 if (!function_exists('setting')) {
     function setting($key = null, $default = null)
     {
-        /** @var \ItDevgroup\LaravelSettingLite\SettingServiceInterface $setting */
-        $setting = app(\ItDevgroup\LaravelSettingLite\SettingServiceInterface::class);
+        $builder = SettingModel::query();
+        $builder->where('key', '=', $key);
 
-        try {
-            $value = $setting->getByKey($key)->value;
-        } catch (Exception $e) {
-            $value = null;
-        }
+        $value = $builder->first()?->value;
 
         if (!$value) {
             $value = $default;

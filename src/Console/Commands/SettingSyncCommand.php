@@ -6,7 +6,7 @@ use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
-use ItDevgroup\LaravelSettingLite\Model\Setting;
+use ItDevgroup\LaravelSettingLite\Model\SettingModel;
 
 /**
  * Class SettingSyncCommand
@@ -15,37 +15,18 @@ use ItDevgroup\LaravelSettingLite\Model\Setting;
 class SettingSyncCommand extends Command
 {
     /**
-     * @var string
+     * @inheritdoc
      */
     protected $signature = 'setting:sync';
     /**
-     * @var string
+     * @inheritdoc
      */
     protected $description = 'Synchronization of settings';
-    /**
-     * @var string|null
-     */
     private ?string $dataClassName = null;
-    /**
-     * @var string|null
-     */
     private ?string $dataMethodName = null;
-    /**
-     * @var bool|null
-     */
     private ?bool $syncCreate = false;
-    /**
-     * @var bool|null
-     */
     private ?bool $syncDelete = false;
-    /**
-     * @var Collection|null
-     */
     private ?Collection $syncUpdateFields = null;
-    /**
-     * @var string|null
-     */
-    private ?string $modelName = null;
 
     /**
      * @throws Exception
@@ -74,7 +55,6 @@ class SettingSyncCommand extends Command
         $this->syncCreate = (bool)Config::get('setting_lite.sync.create');
         $this->syncDelete = (bool)Config::get('setting_lite.sync.delete');
         $this->syncUpdateFields = Collection::make(Config::get('setting_lite.sync.update_fields'));
-        $this->modelName = Config::get('setting_lite.model');
     }
 
     /**
@@ -93,8 +73,8 @@ class SettingSyncCommand extends Command
     {
         $data = $this->getDataFormatted($data);
 
-        /** @var Setting $row */
-        foreach ($this->modelName::query()->cursor() as $row) {
+        /** @var SettingModel $row */
+        foreach (SettingModel::query()->cursor() as $row) {
             if (!$data->get($row->key)) {
                 if ($this->syncDelete) {
                     $row->delete();
@@ -126,10 +106,10 @@ class SettingSyncCommand extends Command
     }
 
     /**
-     * @param Setting $setting
+     * @param SettingModel $setting
      * @param Collection $data
      */
-    private function updateRow(Setting $setting, Collection $data): void
+    private function updateRow(SettingModel $setting, Collection $data): void
     {
         foreach ($this->syncUpdateFields as $field) {
             if ($field == 'options') {
@@ -152,7 +132,7 @@ class SettingSyncCommand extends Command
         foreach ($data as $row) {
             $row = Collection::make($row);
             $row->offsetUnset('id');
-            $setting = new $this->modelName();
+            $setting = new SettingModel();
             foreach ($row->keys() as $field) {
                 if ($field == 'options') {
                     $this->prepareFieldOptions($row);

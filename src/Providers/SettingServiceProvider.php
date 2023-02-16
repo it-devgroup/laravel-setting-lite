@@ -5,8 +5,8 @@ namespace ItDevgroup\LaravelSettingLite\Providers;
 use Illuminate\Support\ServiceProvider;
 use ItDevgroup\LaravelSettingLite\Console\Commands\SettingPublishCommand;
 use ItDevgroup\LaravelSettingLite\Console\Commands\SettingSyncCommand;
-use ItDevgroup\LaravelSettingLite\SettingService;
-use ItDevgroup\LaravelSettingLite\SettingServiceInterface;
+use ItDevgroup\LaravelSettingLite\Model\SettingModel;
+use ItDevgroup\LaravelSettingLite\Observers\SettingModelObserver;
 
 /**
  * Class SettingServiceProvider
@@ -15,21 +15,14 @@ use ItDevgroup\LaravelSettingLite\SettingServiceInterface;
 class SettingServiceProvider extends ServiceProvider
 {
     /**
-     * @var string
-     */
-    private $appVersion;
-
-    /**
      * @return void
      */
     public function boot()
     {
-        $this->appVersion = explode('.', $this->app->version())[0];
-
         $this->loadCustomCommands();
         $this->loadCustomConfig();
         $this->loadCustomPublished();
-        $this->loadCustomClasses();
+        $this->loadObservers();
     }
 
     /**
@@ -75,9 +68,7 @@ class SettingServiceProvider extends ServiceProvider
             );
             $this->publishes(
                 [
-                    __DIR__ . '/../../resources/lang' => $this->appVersion >= 9
-                        && get_class($this->app) != 'Laravel\Lumen\Application'
-                            ? base_path('lang') : resource_path('lang')
+                    __DIR__ . '/../../resources/lang' => app('path.lang')
                 ],
                 'lang'
             );
@@ -87,8 +78,8 @@ class SettingServiceProvider extends ServiceProvider
     /**
      * @return void
      */
-    private function loadCustomClasses()
+    private function loadObservers()
     {
-        $this->app->singleton(SettingServiceInterface::class, SettingService::class);
+        SettingModel::observe(SettingModelObserver::class);
     }
 }
